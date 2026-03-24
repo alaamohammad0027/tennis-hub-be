@@ -10,6 +10,7 @@ OTP_EXPIRATION_TIME = settings.OTP_EXPIRATION_TIME
 
 class OTPTypeChoices(models.TextChoices):
     RESET_PASSWORD = "RESET_PASSWORD", "Reset Password"
+    EMAIL_VERIFICATION = "EMAIL_VERIFICATION", "Email Verification"
 
 
 def generate_otp():

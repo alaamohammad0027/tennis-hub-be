@@ -74,13 +74,20 @@ class UserCreateSerializer(UserBaseSerializer):
 
 
 class ProfileSerializer(UserBaseSerializer):
-    """Serializer for the authenticated user's own profile"""
+    """Serializer for the authenticated user's own profile (GET /me response)."""
 
     class Meta(UserBaseSerializer.Meta):
+        fields = UserBaseSerializer.Meta.fields + (
+            "email_verified",
+            "nationality",
+            "date_of_birth",
+            "bio",
+        )
         read_only_fields = UserBaseSerializer.Meta.read_only_fields + (
             "email",
             "user_type",
             "is_active",
+            "email_verified",
         )
         extra_kwargs = {
             "first_name": {"required": False},

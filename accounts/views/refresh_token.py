@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, permissions
 from rest_framework.response import Response
 import jwt
@@ -6,6 +7,10 @@ from jwt.exceptions import InvalidTokenError
 from accounts.serializers.refresh_token import RefreshTokenSerializer
 
 
+@extend_schema(
+    tags=["Authentication"],
+    description="Get a new access token using a valid refresh token.",
+)
 class CustomRefreshTokenAPIView(TokenRefreshView):
     permission_classes = [permissions.AllowAny]
 

@@ -42,8 +42,17 @@ class LoginSerializer(serializers.Serializer):
 
         if not user:
             raise AuthenticationFailed(_("Invalid credentials"))
+        elif not user.email_verified:
+            raise AuthenticationFailed(
+                _(
+                    "Email not verified. Please check your inbox for the OTP "
+                    "or use POST /auth/resend-verification to get a new one."
+                )
+            )
         elif not user.is_active:
-            raise AuthenticationFailed(_("Account disabled"))
+            raise AuthenticationFailed(
+                _("Account is disabled. Please contact support.")
+            )
 
         validated_date["user"] = user
         return validated_date

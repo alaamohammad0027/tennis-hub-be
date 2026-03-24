@@ -4,31 +4,21 @@ from rest_framework.views import APIView
 from accounts.serializers import (
     LogoutSerializer,
     LoginSerializer,
-    LoginResponseSerializer,
 )
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils.translation import gettext_lazy as _
-from drf_spectacular.utils import extend_schema
+from accounts.views.schema import login_schema, logout_schema
 from core.services.exceptions import CustomAPIException
 from django.utils import timezone
 
 
 class LoginAPIView(APIView):
-    """
-    Login user with email and password
-    Permissions: AllowAny
-    """
-
     permission_classes = [permissions.AllowAny]
 
     def get_serializer(self, *args, **kwargs):
         return LoginSerializer(*args, **kwargs)
 
-    @extend_schema(
-        description="Login user with email and password",
-        request=LoginSerializer,
-        responses={200: LoginResponseSerializer},
-    )
+    @login_schema
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(
             data=request.data, context={"request": request}
@@ -44,20 +34,12 @@ class LoginAPIView(APIView):
 
 
 class LogoutAPIView(generics.GenericAPIView):
-    """
-    Logout user and blacklist the refresh token
-    Permissions: IsAuthenticated
-    """
-
     permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer(self, *args, **kwargs):
         return LogoutSerializer(*args, **kwargs)
 
-    @extend_schema(
-        description="Logout user and blacklist the refresh token",
-        responses={200: "{'message': 'Logged out successfully'}"},
-    )
+    @logout_schema
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -41,11 +41,12 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "drf_spectacular",
     "django_filters",
+    "django_countries",
     "cachalot",
     "modeltranslation",
 ]
 # Local Apps
-LOCAL_APPS = ["accounts"]
+LOCAL_APPS = ["accounts", "tennis", "management", "feed"]
 
 
 # Application definition
@@ -228,9 +229,9 @@ CELERY_TIMEZONE = "UTC"
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "staticfiles"),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "staticfiles"),
+# ]
 
 # Static files finders
 STATICFILES_FINDERS = [
@@ -312,7 +313,7 @@ TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:8000",
     "http://localhost:8000",
-    "https://epms.urbatech.io",
+    "https://tennis.urbatech.io",
 ]
 
 # CORS settings - Allow ALL origins

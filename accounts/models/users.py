@@ -3,13 +3,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from uuid import uuid4
+from django_countries.fields import CountryField
 from accounts.managers import UserManager
 from core.services.validators import validate_model_image_only
-
-
-class UserType(models.TextChoices):
-    ADMIN = "ADMIN", _("Admin")
-    MEMBER = "MEMBER", _("Member")
+from accounts.models.choices import UserType
 
 
 class User(AbstractUser):
@@ -27,12 +24,11 @@ class User(AbstractUser):
         validators=[validate_model_image_only],
     )
 
-    # User Type and Permissions
     user_type = models.CharField(
         _("User Type"),
         max_length=20,
         choices=UserType.choices,
-        default=UserType.,
+        default=UserType.FAN,
         db_index=True,
     )
 
@@ -41,9 +37,17 @@ class User(AbstractUser):
         default=True,
         help_text=_(
             "Designates whether this user should be treated as active. "
-            "Unselect this instead of deleting accounts."
+            "Set to False to disable the account (admin action). "
         ),
     )
+    email_verified = models.BooleanField(
+        _("Email Verified"),
+        default=False,
+        help_text=_("True once the user has confirmed their email via OTP."),
+    )
+    nationality = CountryField(_("Nationality"), blank=True)
+    date_of_birth = models.DateField(_("Date of Birth"), null=True, blank=True)
+    bio = models.TextField(_("Bio"), blank=True)
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
