@@ -12,9 +12,9 @@ from drf_spectacular.views import (
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("apis/auth/", include("accounts.urls")),
-    path("apis/management/", include("management.urls")),
+    # path("apis/management/", include("management.urls")),
     path("apis/feed/", include("feed.urls")),
-    path("apis/tennis/", include("tennis.urls")),
+    # path("apis/tennis/", include("tennis.urls")),
 ]
 
 # API Documentation URLs
